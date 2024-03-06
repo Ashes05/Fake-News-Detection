@@ -1,3 +1,4 @@
+#pip install flask
 from flask import Flask, render_template, request,jsonify
 #pip install nltk
 import nltk
