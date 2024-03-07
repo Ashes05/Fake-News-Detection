@@ -1,5 +1,5 @@
 #pip install flask
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, render_template, request
 #pip install nltk
 import nltk
 from nltk.corpus import stopwords
@@ -46,8 +46,7 @@ def prediction(text):
 def base():
     if request.method == 'POST':
         text = request.form['text']
-        result = prediction(text)
-        return render_template('index.html',result = result)
+        prediction(text)
     return render_template('index.html')
 
 if __name__ == "__main__":
