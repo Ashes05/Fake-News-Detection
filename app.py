@@ -10,7 +10,7 @@ import os
 import re
 
 #Looks for all the files in same directory so we aren't sending stuff around, not sure if this is convenient or good but for now it might have to do
-app = Flask(__name__,template_folder='.')
+app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
 #Gives the direct directory to the files we will be using, so rather than hardcoding-
 #We just use this to retrieve any files, in short
 #programDirectory = "C:/user/documents/Project/app.py"
@@ -47,7 +47,7 @@ def base():
     if request.method == 'POST':
         text = request.form['text']
         prediction(text)
-    return render_template('index.html')
+    return render_template('FakeNew.html')
 
 if __name__ == "__main__":
     app.run()
