@@ -5,18 +5,42 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap" rel="stylesheet">        <link rel="stylesheet" href="FakeNews.css">
         <title>FakeNewsDection</title>
+       
     </head>
     <body>
-        <h1 style="margin-top:50px; color: white; font-size: 40px; margin-bottom: 10px;">Fake News Dector</h1>
 
-        <div class="boop">
+        
+
+        
+ 
+
+        <div class="boop" style="text-align:center;">                
             <div class="container">
+
+                <!-- Another container for the button to work off aswell as being a child of the first container -->
+                <div class="container2">
+                    <h1 style="font-size: 20px; color:white;" id="lightmodetext">Dark Mode</h1>
+                    <label class="switch">
+                        <input type="checkbox" id="check" onclick="isChecked()">
+                            <span class="slider"></span>
+                      </label>
+                </div>
+            
+
+                <h1 style="color: white; font-size: 40px; text-align: center; ">Fake News Detector</h1>
                 <form action ="/" method="post">
                     <textarea name="text" spellcheck="false" placeholder="Please copy artical here" required></textarea>
-                    <button onclick="">Check</button>
-                </form>  
+                    <button onclick="" id="button">Check</button>
+                </form>
+                <!-- Code for the progress bar-->
+                <progress id="fakeness" value="10" max="100"> 0% </progress>  
+                <br>
+                <label style="font-size: larger; color: white;"> 0%  Fake</label>
             </div>
         </div>
+
+
+     
 
 
         <script src="FakeNews.js"></script>
