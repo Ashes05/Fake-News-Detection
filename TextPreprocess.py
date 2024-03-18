@@ -23,6 +23,9 @@ def preprocessDataset(dataset, textColumn):
     processedSet = processedSet.apply(lambda x: [word for word in x.split() if word not in stop_words])
 
     # Lemmatization
+    # Lemmatization solves the problem we were getting with stemming, where words had a chance
+    # of becoming invalid, as stemming would just remove the last few letters of certain words.
+    # Lemmatization stems words, but ensures that the resulting words are valid words in the dictionary.
     lemmatizer = WordNetLemmatizer()
     processedSet = processedSet.apply(lambda x: [lemmatizer.lemmatize(word) for word in x])
 
