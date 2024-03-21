@@ -9,30 +9,29 @@
     </head>
     <body>
 
-        
-
-        
- 
-
         <div class="boop" style="text-align:center;">                
             <div class="container">
 
                 <!-- Another container for the button to work off aswell as being a child of the first container -->
                 <div class="container2">
+                    <!-- Dark Mode and Light Mode slider -->
                     <h1 style="font-size: 20px; color:white;" id="lightmodetext">Dark Mode</h1>
                     <label class="switch">
                         <input type="checkbox" id="check" onclick="isChecked()">
                             <span class="slider"></span>
                       </label>
                 </div>
-            
 
+                 <!-- Title of the page -->
                 <h1 style="color: white; font-size: 40px; text-align: center; ">Fake News Detector</h1>
+
+                 <!-- Text Input -->
                 <form action ="/" method="post">
                     <textarea name="text" spellcheck="false" placeholder="Please copy artical here" required></textarea>
+                    <!-- Sends the inputted text to the back-end -->
                     <button onclick="" id="button">Check</button>
                 </form>
-                <!-- Code for the progress bar-->
+                <!-- Code for the progress bar -->
                 <progress id="fakeness" value="10" max="100"> 0% </progress>  
                 <br>
                 <label style="font-size: larger; color: white;"> 0%  {{push}}</label>
