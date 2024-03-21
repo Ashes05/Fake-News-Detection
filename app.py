@@ -1,52 +1,59 @@
-#pip install flask
+#pip install flask nltk
 from flask import Flask, render_template, request
-#pip install nltk
 import nltk
+nltk.download('stopwords')
 from nltk.corpus import stopwords
-from nltk.stem.porter import PorterStemmer as ps
-#Allows us to use files on the device
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
 import os
-#Regular Expression
 import re
+import pickle
 
 #Looks for all the files in same directory so we aren't sending stuff around, not sure if this is convenient or good but for now it might have to do
 app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
-#Gives the direct directory to the files we will be using, so rather than hardcoding-
-#We just use this to retrieve any files, in short
+
 #programDirectory = "C:/user/documents/Project/app.py"
-#Good practice as isn't hardcoding
 programDirectory = os.path.abspath(os.path.dirname(__file__))
 
-#NEED TO MAKE OUR OWN MODELS
-#Loading in model
-#DTCmodel = os.path.join(programDirectory, 'DTCMODEL.pkl')
-#TF_IDFmodel = os.path.join(programDirectory, 'TFIDFMODEL.pkl')
 
-#Opening the trained model
-#rb represents readbytes
-#DTC = pk.load(open(DTCmodel,'rb'))
-#TFIDF = pk.load(open(TF_IDFmodel,'rb'))
+with open('FakeNewsModel_V1.pkl', 'rb') as file:
+    rf, tfidf_vectorizer = pickle.load(file)
 
-nltk.download('stopwords')
-stemmer = ps()
+
+#Process data sets
+def preprocessDataset(dataset,textColumn):
+    review = dataset[textColumn].apply(lambda x: re.sub(r'[^a-zA-Z0-9\s]', '', x))
+    review = review.apply(lambda x: x.lower())
+    stop_words = set(stopwords.words('english'))
+    processedSet = review.apply(lambda x: [word for word in x.split() if word not in stop_words])
+    processedSet = processedSet.apply(lambda x: [lemmatizer.lemmatize(word) for word in x])
+    finalText = processedSet.apply(lambda x:  ' '.join(x))
+    return finalText
 
 def prediction(text):
     review = re.sub('[^a-zA-Z]', ' ', text)
     review = review.lower().split()
     stemmedReview = []
+
     for word in review:
         if word not in stopwords.words('english'):
-            temp = stemmer.stem(word)
+            temp = lemmatizer.lemmatize(word)
             stemmedReview.append(temp)
-    print(stemmedReview)
 
-#Post is for when we submit(POST) data
-#Get is when we are trying to retrieve the data/website
+    document = ' '.join(stemmedReview)
+    temp = tfidf_vectorizer.transform([document])
+    prediction = rf.predict(temp)
+
+    return prediction
+
+
+
 @app.route('/',methods =['GET','POST'])
 def base():
     if request.method == 'POST':
         text = request.form['text']
-        prediction(text)
+        push = prediction(text)
+        return render_template('FakeNew.html',push = push)
     return render_template('FakeNew.html')
 
 if __name__ == "__main__":
