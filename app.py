@@ -16,7 +16,7 @@ app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.'
 programDirectory = os.path.abspath(os.path.dirname(__file__))
 
 
-with open('FakeNewsModel_V1.pkl', 'rb') as file:
+with open('Model/FakeNewsModel_V1.pkl', 'rb') as file:
     rf, tfidf_vectorizer = pickle.load(file)
 
 
