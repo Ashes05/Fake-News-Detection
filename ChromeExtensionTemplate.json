@@ -3,7 +3,7 @@
     "name": "Fake News Detector",
     "version": "1.0.0",
     "action":{
-        "default_popup": "popup.html",
+        "default_popup": "ChromeExtensionTemplate.html",
         "js": ["ChromeExtensionTemplate.js"]
     }
 }
