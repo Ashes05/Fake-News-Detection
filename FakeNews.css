@@ -1,3 +1,4 @@
+/* Reset default styles for all elements */
 *{
     margin: 0;
     padding: 0;
@@ -5,17 +6,21 @@
     /* text-align: center; */
     font-family: "Kode Mono", sans-serif;
   }
-  
+
+/* Style the body to have a dark gradient background */
   body{
       background: linear-gradient(#272727, #181818); 
       min-height: 100vh;
   }
+
+/* Style the container to center its content */
   .boop{
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
+/* Positions the text that indicates what mode it is on */
   #lightmodetext{
     white-space: nowrap;
     position: absolute;
@@ -23,7 +28,7 @@
     top:-60%;
   }
 
-
+/* Style container */
   .container{
     width: 1000px;
     border-radius: 20px;
@@ -34,12 +39,15 @@
     top: 8%;
   }
 
+/* Style h2 elements within the container */
   .container h2{
     color: #b90000;
     font-size: 28px;
     text-align: left;  
     
   }
+
+/* Style textarea elements within the container */
   .container textarea{
       text-align: left;
       width: 100%;
@@ -54,11 +62,12 @@
       border: px solid #ea4646;
   }
 
-  
+/* Hides the scrollbar */
   textarea::-webkit-scrollbar{
       width: 0px;
   }
-  
+
+/* Style the button elements within the container */
   .container button{
       padding: 5px;
       font-size: 20px; 
@@ -70,25 +79,29 @@
 
   }
 
+/* Style container */
   .container2 {
     position: absolute;
     top:8%;
     left: 102%; 
   }
 
+/* Styles the progress bar */
   #fakeness{
     width: 300px;
     height: 50px;
     color: green;
   }
-  
+
+/* Styles a switch */
   .switch{
     position: relative;
     display: inline-block;
     width: 110px;
     height: 60px;
   }
-  
+
+/* Style the slider */
   .slider{
     position: absolute;
     cursor: pointer;
@@ -100,9 +113,9 @@
     transition: .4s;
     border-radius: 34px;
   }
-  
+
+/* Hide the default checkbox input and style the slider's pseudo elements */
   .switch input{display: none}
-  
   .slider:before{
     position: absolute;
     content: "";
@@ -114,11 +127,13 @@
     transition: 0.4s;
     border-radius: 50px;
   }
-  
+
+/* Style the slider when the checkbox is checked */
   input:checked + .slider{
       background-color: grey;
   }
-  
+
+/* Style the slider's pseudo elements when the checkbox is checked */
   input:checked + .slider::before{
     transform: translateX(50px);
     background-color: rgb(255, 255, 255);
