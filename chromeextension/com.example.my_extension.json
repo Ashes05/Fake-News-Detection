@@ -1,0 +1,10 @@
+{
+    "name": "com.example.my_extension",
+    "description": "Native messaging host for my Chrome extension",
+    "path": "C:\\Users\\khale\\OneDrive\\Desktop\\Microsoft Project\\chromeextension\\extension.js",
+    "type": "stdio",
+    "allowed_origins": [
+      "chrome-extension://agpnjoenhdfcgailmbnjkepnnlcgpppd/"
+    ]
+  }
+  
