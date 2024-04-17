@@ -1,25 +1,21 @@
-
-# Backend pipeline
-
 trigger:
-- backend
+  - backend
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.8'
-    addToPath: true
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.8'
+      addToPath: true
 
-- script: |
-    python -m pip install --upgrade pip
-    pip install Flask
-    pip install nltk
-  displayName: 'Install dependencies'
+  - script: |
+      python -m pip install --upgrade pip
+      pip install Flask
+      pip install nltk
+    displayName: 'Install dependencies'
 
-
-- script: |
-    python -m unittest tests/test_app.py
-  displayName: 'Run unit tests'
+  - script: |
+      python -m unittest tests/test_app.py
+    displayName: 'Run unit tests'
