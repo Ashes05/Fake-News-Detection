@@ -1,20 +1,16 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-    // Selects the textarea from the page
-    const textarea = document.querySelector("textarea");
-    if (textarea) {
-        // Adds an event listener to the textarea
-        textarea.addEventListener("keyup", e => {
-        // Sets the initial height of the textarea to 400px
-        textarea.style.height = "400px";
-        // Get the height of the content in the textarea
-        let scHeight = e.target.scrollHeight;
-        // Set the textarea to the scroll height, allowing it to grow as the user inputs content
-        textarea.style.height = `${scHeight}px`;
-        });
-    } else {
-        console.error('Textarea element not found');
-    }
+
+// Selects the textarea from the page
+const textarea = document.querySelector("textarea");
+// Adds an event listener to the textarea
+textarea.addEventListener("keyup", e => {
+    // Sets the initial height of the textarea to 400px
+    textarea.style.height = "400px";
+    // Get the height of the content in the textarea
+    let scHeight = e.target.scrollHeight;
+    // Set the textarea to the scroll height, allowing it to grow as the user inputs content
+    textarea.style.height = `${scHeight}px`;
 });
+
 
 
 // Selects the checkbox from the page
