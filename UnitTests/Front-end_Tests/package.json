@@ -1,0 +1,18 @@
+{
+    "scripts": {
+        "test": "jest"
+    },
+    "jest": {
+        "testEnvironment": "jsdom",
+        "setupFiles": ["./jest.setup.js"]
+    },
+       
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "jsdom": "^24.0.0"
+    },
+    "dependencies": {
+        "util": "^0.12.5"
+    }
+}
