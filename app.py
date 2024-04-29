@@ -8,6 +8,7 @@ lemmatizer = WordNetLemmatizer()
 import os
 import re
 import pickle
+import pandas as pd
 
 #Looks for all the files in same directory so we aren't sending stuff around, not sure if this is convenient or good but for now it might have to do
 app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
@@ -16,35 +17,26 @@ app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.'
 programDirectory = os.path.abspath(os.path.dirname(__file__))
 
 
-with open('Model/FakeNewsModel_V1.pkl', 'rb') as file:
-    rf, tfidf_vectorizer = pickle.load(file)
+with open('Model/TrainedModels/FakeNewsModel_V3.pkl', 'rb') as file:
+    rf_model,tfidf_vectorizer_text,tfidf_vectorizer_combined_sentiment = pickle.load(file)
 
-
-#Process data sets
-def preprocessDataset(dataset,textColumn):
-    review = dataset[textColumn].apply(lambda x: re.sub(r'[^a-zA-Z0-9\s]', '', x))
-    review = review.apply(lambda x: x.lower())
-    stop_words = set(stopwords.words('english'))
-    processedSet = review.apply(lambda x: [word for word in x.split() if word not in stop_words])
-    processedSet = processedSet.apply(lambda x: [lemmatizer.lemmatize(word) for word in x])
-    finalText = processedSet.apply(lambda x:  ' '.join(x))
-    return finalText
-
-def prediction(text):
+def filter(text):
     review = re.sub('[^a-zA-Z]', ' ', text)
     review = review.lower().split()
-    stemmedReview = []
+    stemmed_review = [word for word in review if word not in stopwords.words('english')]
+    text_string = ' '.join(stemmed_review)
+    return text_string
 
-    for word in review:
-        if word not in stopwords.words('english'):
-            temp = lemmatizer.lemmatize(word)
-            stemmedReview.append(temp)
+def prediction(text):
+    text = filter(text)
 
-    document = ' '.join(stemmedReview)
-    temp = tfidf_vectorizer.transform([document])
-    prediction = rf.predict(temp)
+    tfidf_sampletext = tfidf_vectorizer_text.transform([text])
+    tfidf_sentiment = tfidf_vectorizer_combined_sentiment.transform([text])
 
-    return prediction
+    test_features = pd.concat([pd.DataFrame(tfidf_sampletext.toarray()), 
+                           pd.DataFrame(tfidf_sentiment.toarray())], axis=1)
+    samplePred = rf_model.predict(test_features)
+    return samplePred
 
 
 
