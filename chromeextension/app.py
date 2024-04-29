@@ -2,20 +2,56 @@
 def scraper(url):
     from bs4 import BeautifulSoup
     import requests
-    
+    import re
+
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
-    ptags = soup.findAll("p")
-    articletags = soup.findAll("article")   #Selects certain tags in the HTML file
-    news =  ptags + articletags
 
-    for new in news:
-        print(new.text)
+    
+    if(re.search("https://www.thejournal.ie/", url)):
+        main_article = soup.find('div', id='main-content-wrapper')
+        main_article_paragraphs = main_article.find_all('p')
+
+        for paragraph in main_article_paragraphs[:-2]:
+             if(re.search("Read Next", paragraph.text)):
+                 continue
+             else:
+                print(paragraph.text)
+    elif(re.search("https://www.rte.ie/", url)):
+        main_article = soup.find('article', class_='rte-article article-pillar-news document')
+        main_article_paragraphs = main_article.find_all('p')
+
+        for paragraph in main_article_paragraphs:
+             print(paragraph.text)
+    elif(re.search("https://www.irishtimes.com/", url)):
+        main_article = soup.find('article', class_='default__ArticleBody-sc-1nhbny4-2 kWWtWa article-body-wrapper article-sub-wrapper')
+        main_article_paragraphs = main_article.find_all('p')
+
+        for paragraph in main_article_paragraphs:
+             print(paragraph.text)
+    elif(re.search("https://www.irishexaminer.com/", url)):
+        main_article = soup.find('story')
+        main_article_paragraphs = main_article.find_all('p')
+
+        for paragraph in main_article_paragraphs:
+             print(paragraph.text)
+    elif(re.search("https://www.breakingnews.ie/", url)):
+        main_article = soup.find('div', class_='flex-1 lg:w-1/2')
+        main_article_paragraphs = main_article.find_all('p')
+
+        for paragraph in main_article_paragraphs:
+             print(paragraph.text)
+
+
+
+
+
+
 
 from flask import Flask, request
 from flask_cors import CORS
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app) 
 
 @app.route('/data', methods=['POST'])
 def handle_data():
