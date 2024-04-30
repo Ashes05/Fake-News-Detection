@@ -1,4 +1,4 @@
-
+##THIS IS TO NO LONGER BE USED, ONLY USING app.py in overall directory!!! <----------------
 def scraper(url):
     from bs4 import BeautifulSoup
     import requests
@@ -38,7 +38,13 @@ def scraper(url):
     elif(re.search("https://www.breakingnews.ie/", url)):
         main_article = soup.find('div', class_='flex-1 lg:w-1/2')
         main_article_paragraphs = main_article.find_all('p')
-
+        
+        for paragraph in main_article_paragraphs:
+             print(paragraph.text)
+    elif(re.search("https://edition.cnn.com/", url)):
+        main_article = soup.find('div', class_='flex-1 lg:w-1/2')
+        main_article_paragraphs = main_article.find_all('p')
+        
         for paragraph in main_article_paragraphs:
              print(paragraph.text)
 
