@@ -95,6 +95,16 @@ def scraper(url):
 
         push = prediction(paragraph)
         print("Verdict:",push)
+    elif(re.search("https://www.foxnews.com/", url)):
+        main_article = soup.find('div', class_='article-body')
+        main_article_paragraphs = main_article.find_all('p')
+
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+
+        push = prediction(paragraph)
+        print("Verdict:",push)
+    else:
+        
         
 
 
