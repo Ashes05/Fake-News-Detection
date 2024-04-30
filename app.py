@@ -104,6 +104,7 @@ def scraper(url):
         push = prediction(paragraph)
         print("Verdict:",push)
     else:
+        print("I'll make a default scrapper later - khaleed")
         
         
 
