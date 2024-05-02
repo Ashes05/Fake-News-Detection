@@ -10,6 +10,7 @@ import os
 import re
 import pickle
 import pandas as pd
+import numpy as np
 
 #Looks for all the files in same directory so we aren't sending stuff around, not sure if this is convenient or good but for now it might have to do
 app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
@@ -37,7 +38,11 @@ def prediction(text):
     test_features = pd.concat([pd.DataFrame(tfidf_sampletext.toarray()), 
                            pd.DataFrame(tfidf_sentiment.toarray())], axis=1)
     samplePred = rf_model.predict(test_features)
-    return samplePred
+    consts = rf_model.predict_proba(test_features)
+    max_prob_index = np.argmax(consts)
+    max_prob = consts[0][max_prob_index]
+
+    return samplePred,max_prob
 
 def scraper(url):
     from bs4 import BeautifulSoup
@@ -53,56 +58,56 @@ def scraper(url):
         main_article_paragraphs = main_article.find_all('p')
 
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.rte.ie/", url)):
         main_article = soup.find('article', class_='rte-article article-pillar-news document')
         main_article_paragraphs = main_article.find_all('p')
 
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.irishtimes.com/", url)):
         main_article = soup.find('article', class_='default__ArticleBody-sc-1nhbny4-2 kWWtWa article-body-wrapper article-sub-wrapper')
         main_article_paragraphs = main_article.find_all('p')
 
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.irishexaminer.com/", url)):
         main_article = soup.find('story')
         main_article_paragraphs = main_article.find_all('p')
 
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.breakingnews.ie/", url)):
         main_article = soup.find('div', class_='flex-1 lg:w-1/2')
         main_article_paragraphs = main_article.find_all('p')
         
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://edition.cnn.com/", url)):
         main_article = soup.find('div', class_='flex-1 lg:w-1/2')
         main_article_paragraphs = main_article.find_all('p')
         
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.foxnews.com/", url)):
         main_article = soup.find('div', class_='article-body')
         main_article_paragraphs = main_article.find_all('p')
 
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
-        push = prediction(paragraph)
-        print("Verdict:",push)
+        push,prob = prediction(paragraph)
+        return push,prob
     else:
         print("I'll make a default scrapper later - khaleed")
         
@@ -114,8 +119,9 @@ def scraper(url):
 def base():
     if request.method == 'POST':
         text = request.form['text']
-        push = prediction(text)
-        return render_template('FakeNew.html',push = push)
+        push,prob = prediction(text)
+        prob = prob*100
+        return render_template('FakeNew.html',push = push,prob = prob)
     return render_template('FakeNew.html')
 
 
@@ -126,11 +132,12 @@ def handle_data():
     
     # Process the data as needed
     url = data.get('url')
-    scraper(url) #Runs scraper method 
+    push,prob = scraper(url) #Runs scraper method 
+    prob = prob*100
 
     
     # Optionally, you can return a response to the client
-    return 'Data received successfully'
+    return render_template('FakeNew.html',push = push,prob = prob)
 
 if __name__ == "__main__":
     app.run(host = '0.0.0.0')
