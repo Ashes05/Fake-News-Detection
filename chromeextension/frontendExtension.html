@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap" rel="stylesheet">  
+    <title>News Authenticity Checker</title>
+    <style>
+        body {
+            /*border-radius: 5px;*/
+            background: linear-gradient(#272727, #181818); 
+            font-family: "Kode Mono", sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            /*border-radius: 5px;*/
+            background-color: #f9f9f9;
+            /*box-shadow: 8px 8px 10px rgba(0,0,0,0.06);*/
+            background: rgb(47, 47, 47);
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px 15px;
+            margin-top: 10px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: rgb(255, 255, 255);
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-family: "Kode Mono", sans-serif;
+            background-image: linear-gradient(rgb(177, 0, 0),rgb(255, 0, 0));
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .resultScore {
+            text-align: center;
+            color: white;
+            font-size: 16px;
+        }
+        .result.real {
+            color: lightgreen;
+            text-align: center;
+        }
+        .result.fake {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #f9f9f9; text-align: center;">News Authenticity Checker</h2>
+        <button class="button" id="checkButton">Check News</button>
+        <div class="result" id="resultMessage"></div>
+        <div class="resultScore" id="resultScore"></div>
+    </div>
+    <script src="extension.js"></script>
+</body>
+</html>
