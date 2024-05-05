@@ -1,4 +1,49 @@
-##THIS IS TO NO LONGER BE USED, ONLY USING app.py in overall directory!!! <----------------
+#pip install flask nltk
+from flask import Flask, render_template, request
+from flask_cors import CORS
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+import os
+import re
+import pickle
+import pandas as pd
+import numpy as np
+
+#Looks for all the files in same directory so we aren't sending stuff around, not sure if this is convenient or good but for now it might have to do
+app = Flask(__name__, static_url_path='', static_folder='.', template_folder='.')
+CORS(app)
+#programDirectory = "C:/user/documents/Project/app.py"
+programDirectory = os.path.abspath(os.path.dirname(__file__))
+
+#Opening the file (Might have to change the routing)
+with open('TrainedModels/FakeNewsModel_V3.pkl', 'rb') as file:
+    rf_model,tfidf_vectorizer_text,tfidf_vectorizer_combined_sentiment = pickle.load(file)
+
+def filter(text):
+    review = re.sub('[^a-zA-Z]', ' ', text)
+    review = review.lower().split()
+    stemmed_review = [word for word in review if word not in stopwords.words('english')]
+    text_string = ' '.join(stemmed_review)
+    return text_string
+
+def prediction(text):
+    text = filter(text)
+
+    tfidf_sampletext = tfidf_vectorizer_text.transform([text])
+    tfidf_sentiment = tfidf_vectorizer_combined_sentiment.transform([text])
+
+    test_features = pd.concat([pd.DataFrame(tfidf_sampletext.toarray()), 
+                           pd.DataFrame(tfidf_sentiment.toarray())], axis=1)
+    samplePred = rf_model.predict(test_features)
+    consts = rf_model.predict_proba(test_features)
+    max_prob_index = np.argmax(consts)
+    max_prob = consts[0][max_prob_index]
+
+    return samplePred,max_prob
+
 def scraper(url):
     from bs4 import BeautifulSoup
     import requests
@@ -12,65 +57,80 @@ def scraper(url):
         main_article = soup.find('div', id='main-content-wrapper')
         main_article_paragraphs = main_article.find_all('p')
 
-        for paragraph in main_article_paragraphs[:-2]:
-             if(re.search("Read Next", paragraph.text)):
-                 continue
-             else:
-                print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.rte.ie/", url)):
         main_article = soup.find('article', class_='rte-article article-pillar-news document')
         main_article_paragraphs = main_article.find_all('p')
 
-        for paragraph in main_article_paragraphs:
-             print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.irishtimes.com/", url)):
         main_article = soup.find('article', class_='default__ArticleBody-sc-1nhbny4-2 kWWtWa article-body-wrapper article-sub-wrapper')
         main_article_paragraphs = main_article.find_all('p')
 
-        for paragraph in main_article_paragraphs:
-             print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.irishexaminer.com/", url)):
         main_article = soup.find('story')
         main_article_paragraphs = main_article.find_all('p')
 
-        for paragraph in main_article_paragraphs:
-             print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://www.breakingnews.ie/", url)):
         main_article = soup.find('div', class_='flex-1 lg:w-1/2')
         main_article_paragraphs = main_article.find_all('p')
         
-        for paragraph in main_article_paragraphs:
-             print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+
+        push,prob = prediction(paragraph)
+        return push,prob
     elif(re.search("https://edition.cnn.com/", url)):
         main_article = soup.find('div', class_='flex-1 lg:w-1/2')
         main_article_paragraphs = main_article.find_all('p')
         
-        for paragraph in main_article_paragraphs:
-             print(paragraph.text)
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
+        push,prob = prediction(paragraph)
+        return push,prob
+    elif(re.search("https://www.foxnews.com/", url)):
+        main_article = soup.find('div', class_='article-body')
+        main_article_paragraphs = main_article.find_all('p')
 
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
+        push,prob = prediction(paragraph)
+        return push,prob
+    else:
+        print("I'll make a default scrapper later - khaleed")
+        
+@app.route('/',methods =['GET','POST'])
+def base():
+    if request.method == 'POST':
+        text = request.form['text']
+        push,prob = prediction(text)
+        prob = prob*100
+        return render_template('frontendExtension.html',push = push,prob = prob)
+    return render_template('frontendExtension.html')
 
-
-
-
-from flask import Flask, request
-from flask_cors import CORS
-app = Flask(__name__)
-CORS(app) 
 
 @app.route('/data', methods=['POST'])
 def handle_data():
     # Retrieve the JSON data from the request body
     data = request.json
-    
     # Process the data as needed
     url = data.get('url')
-    scraper(url) #Runs scraper method 
-
+    push,prob = scraper(url) #Runs scraper method 
+    prob = round(prob * 100, 2)  # Converting to percentage and rounding off
+    #
+    return {"prob":prob,"result":push[0]} #Probability/Confidence (%) and result (REAL or FAKE)
     
-    # Optionally, you can return a response to the client
-    return 'Data received successfully'
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host = '0.0.0.0')
