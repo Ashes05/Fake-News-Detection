@@ -1,16 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "Hello Extensions",
-    "description": "Base Level Extension",
-    "version": "1.0",
-    "permissions": [
-      "tabs",
-      "activeTab",
-      "nativeMessaging"
-    ],
-    "action": {
-      "default_popup": "hello.html",
-      "default_icon": "hello_extensions.png"
-    }
-    
+  "manifest_version": 3,
+  "name": "Chrome Extension fakenews",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "nativeMessaging"
+  ],
+  "action": {
+    "default_popup": "frontendExtension.html",
+    "default_icon": "fakenewsIcon128.png"
+  },
+  "host_permissions": [
+    "http://localhost:*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
   }
+}
