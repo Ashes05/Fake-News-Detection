@@ -1,51 +1,67 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap" rel="stylesheet">       
-        <link rel="stylesheet" href="FakeNews.css">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link rel="stylesheet" href="FakeNews.css" />
 
-        <link rel="icon" type="image/x-icon" href="Icon.png">
-        <title>FakeNewsDection</title>
-       
-    </head>
-    <body >
+    <link rel="icon" type="image/x-icon" href="Icon.png" />
+    <title>FakeNewsDection</title>
+  </head>
+  <body>
+    <div class="wrapper-main">
+      <div class="boop" id="wrapper" style="text-align: center">
+        <div class="container">
+          <!-- Another container for the button to work off aswell as being a child of the first container -->
+          <div class="container2">
+            <!-- Dark Mode and Light Mode slider -->
+            <h1 style="font-size: 20px; color: white" id="lightmodetext">
+              Dark Mode
+            </h1>
+            <label class="switch">
+              <input type="checkbox" id="check" onclick="isChecked()" />
+              <span class="slider"></span>
+            </label>
+          </div>
 
-        <div class="boop" id="wrapper" style="text-align:center;">                
-            <div class="container">
+          <!-- Title of the page -->
+          <h1
+            style="color: white; font-size: 40px; text-align: center"
+            id="themetext1"
+          >
+            Fake News Detector
+          </h1>
 
-                <!-- Another container for the button to work off aswell as being a child of the first container -->
-                <div class="container2">
-                    <!-- Dark Mode and Light Mode slider -->
-                    <h1 style="font-size: 20px; color:white;" id="lightmodetext">Dark Mode</h1>
-                    <label class="switch">
-                        <input type="checkbox" id="check" onclick="isChecked()">
-                            <span class="slider"></span>
-                      </label>
-                </div>
+          <!-- Text Input -->
+          <form action="/" method="post">
+            <textarea
+              id="text"
+              name="text"
+              spellcheck="false"
+              placeholder="Please paste the news article you want to check!"
+              required
+            ></textarea>
+            <!-- Sends the inputted text to the back-end -->
+            <button onclick="" id="button">Check</button>
+          </form>
+          <!-- Code for the progress bar -->
+          <progress id="fakeness" value="{{prob}}" max="100">0%</progress>
+          <br />
 
-                 <!-- Title of the page -->
-                <h1 style="color: white; font-size: 40px; text-align: center; " id ="themetext1">Fake News Detector</h1>
-
-                 <!-- Text Input -->
-                <form action ="/" method="post">
-                    <textarea id = "text" name="text" spellcheck="false" placeholder="Please copy artical here" required></textarea>
-                    <!-- Sends the inputted text to the back-end -->
-                    <button onclick="" id="button">Check</button>
-                </form>
-                <!-- Code for the progress bar -->
-                <progress id="fakeness" value={{prob}} max="100"> 0% </progress>  
-                <br>
-                
-                <label id = "finalresult" style="font-size: larger; color: white;"> {{prob}}%  {{push}}</label>
-                <div style = "margin-top: 10px;">
-                    <button onclick="resetPage()" id="button2">Reset</button>
-                </div>
-                
-            </div>
+          <label id="finalresult" style="font-size: larger; color: white">
+            {{prob}}% {{push}}</label
+          >
+          <div style="margin-top: 10px">
+            <button onclick="resetPage()" id="button2">Reset</button>
+          </div>
         </div>
-
-        <script src="FakeNews.js"></script>
-    </body>
+      </div>
+    </div>
+    <script src="FakeNews.js"></script>
+  </body>
 </html>
