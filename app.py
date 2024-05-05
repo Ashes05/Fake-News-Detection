@@ -121,6 +121,7 @@ def base():
         text = request.form['text']
         push,prob = prediction(text)
         prob = prob*100
+        push = ''.join(push) # Returns FALSE
         return render_template('FakeNew.html',push = push,prob = prob)
     return render_template('FakeNew.html')
 
@@ -134,8 +135,8 @@ def handle_data():
     url = data.get('url')
     push,prob = scraper(url) #Runs scraper method 
     prob = prob*100
+    push = ''.join(push) # Returns FALSE
 
-    
     # Optionally, you can return a response to the client
     return render_template('FakeNew.html',push = push,prob = prob)
 
