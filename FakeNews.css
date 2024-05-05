@@ -1,169 +1,233 @@
 /* Reset default styles for all elements */
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    /* text-align: center; */
-    font-family: "Kode Mono", sans-serif;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* text-align: center; */
+  font-family: "Kode Mono", sans-serif;
+}
 
 /* Style the body to have a dark gradient background */
-  body{
-      background: linear-gradient(#272727, #181818); 
-      background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(WebsiteBg.jpg);
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      background-size: cover;
-      min-height: 100vh;
-      
-  }
+body {
+  background: linear-gradient(#272727, #181818);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url(WebsiteBg.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+.wrapper-main {
+  width: 1000px;
+  padding: 100px 0;
+  margin: 0 auto;
+}
 
 /* Style the container to center its content */
-  .boop{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.boop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Positions the text that indicates what mode it is on */
-  #lightmodetext{
-    white-space: nowrap;
-    position: absolute;
-    margin-right: 10%;
-    top:-60%;
-  }
+#lightmodetext {
+  white-space: nowrap;
+  position: absolute;
+  margin-right: 10%;
+  top: -60%;
+}
 
-  progress[value] {
-    /* Reset the default appearance */
-    -webkit-appearance: none;
-     appearance: none;
-  
-    width: 250px;
-    height: 20px;
-    margin-top: 10px;
-  }
+progress[value] {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+  appearance: none;
 
-  progress[value]::-webkit-progress-bar {
-    background-color: #eee;
-    border-radius: 2px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
-  }
+  width: 250px;
+  height: 20px;
+  margin-top: 10px;
+}
 
-  progress[value]::-webkit-progress-value {
-    background-image:
-       -webkit-linear-gradient(left, rgb(177, 0, 0),rgb(255, 0, 0));
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
 
-      border-radius: 2px; 
-  }
+progress[value]::-webkit-progress-value {
+  background-image: -webkit-linear-gradient(
+    left,
+    rgb(177, 0, 0),
+    rgb(255, 0, 0)
+  );
+
+  border-radius: 2px;
+}
 
 /* Style container */
-  .container{
-    width: 1000px;
-    border-radius: 20px;
-    padding: 10px 10px 10px;
-    box-shadow: 8px 8px 10px rgba(0,0,0,0.06);
-    background: rgba(47, 47, 47, 0.9);
-    position: absolute;
-    top: 8%;
-  }
+.container {
+  width: 1200px;
+  border-radius: 20px;
+  padding: 10px 10px 10px;
+  box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.06);
+  background: rgba(47, 47, 47, 0.9);
+  position: absolute;
+  top: 8%;
+}
 
 /* Style h2 elements within the container */
-  .container h2{
-    color: #b90000;
-    font-size: 28px;
-    text-align: left;  
-    
-  }
+.container h2 {
+  color: #b90000;
+  font-size: 28px;
+  text-align: left;
+}
 
 /* Style textarea elements within the container */
-  .container textarea{
-      text-align: left;
-      width: 100%;
-      resize: none;
-      height: 400px;
-      outline: none;
-      font-size: 16px;
-      margin-top: 0px;
-      border-radius: 10px;
-      max-height: 600px;
-      caret-color: #ea4646;
-      border: px solid #ea4646;
-  }
+.container textarea {
+  text-align: left;
+  width: 100%;
+  resize: none;
+  height: 400px;
+  outline: none;
+  font-size: 16px;
+  margin-top: 0px;
+  border-radius: 10px;
+  max-height: 600px;
+  caret-color: #ea4646;
+  border: px solid #ea4646;
+}
 
 /* Hides the scrollbar */
-  textarea::-webkit-scrollbar{
-      width: 0px;
-  }
+textarea::-webkit-scrollbar {
+  width: 0px;
+}
 
 /* Style the button elements within the container */
-  .container button{
-      padding: 5px;
-      font-size: 20px; 
-      color: rgb(255, 255, 255);
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background-image: linear-gradient(rgb(177, 0, 0),rgb(255, 0, 0));
-
-  }
+.container button {
+  padding: 5px;
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-image: linear-gradient(rgb(177, 0, 0), rgb(255, 0, 0));
+}
 
 /* Style container */
-  .container2 {
-    position: absolute;
-    top:8%;
-    left: 102%; 
-  }
+.container2 {
+  position: absolute;
+  top: 8%;
+  left: 100%;
+}
 
 /* Styles the progress bar */
-  #fakeness{
-    width: 300px;
-    height: 50px;
-    color: green;
-  }
+#fakeness {
+  width: 300px;
+  height: 50px;
+  color: green;
+}
 
 /* Styles a switch */
-  .switch{
-    position: relative;
-    display: inline-block;
-    width: 110px;
-    height: 60px;
-  }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 110px;
+  height: 60px;
+}
 
 /* Style the slider */
-  .slider{
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color:#464444;
-    transition: .4s;
-    border-radius: 34px;
-  }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #464444;
+  transition: 0.4s;
+  border-radius: 34px;
+}
 
 /* Hide the default checkbox input and style the slider's pseudo elements */
-  .switch input{display: none}
-  .slider:before{
-    position: absolute;
-    content: "";
-    height: 50px;
-    width: 50px;
-    left: 5px;
-    bottom: 5px;
-    background-color: rgb(106, 103, 103);
-    transition: 0.4s;
-    border-radius: 50px;
-  }
+.switch input {
+  display: none;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 50px;
+  width: 50px;
+  left: 5px;
+  bottom: 5px;
+  background-color: rgb(106, 103, 103);
+  transition: 0.4s;
+  border-radius: 50px;
+}
 
 /* Style the slider when the checkbox is checked */
-  input:checked + .slider{
-      background-color: grey;
-  }
+input:checked + .slider {
+  background-color: grey;
+}
 
 /* Style the slider's pseudo elements when the checkbox is checked */
-  input:checked + .slider::before{
-    transform: translateX(50px);
-    background-color: rgb(255, 255, 255);
+input:checked + .slider::before {
+  transform: translateX(50px);
+  background-color: rgb(255, 255, 255);
+}
+
+/*MOBILE VERSION */
+
+@media only screen and (max-width: 600px) and (orientation: landscape) {
+  .wrapper-main {
+    width: 100%;
   }
+  .container {
+    width: 85%;
+  }
+}
+
+@media only screen and (max-width: 600px) and (orientation: portrait) {
+  .wrapper-main {
+    width: 100%;
+  }
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 601px){
+  .wrapper-main {
+    width: 100%
+  }
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 768px){
+  .wrapper-main {
+    width: 100%
+  }
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 992px){
+  .wrapper-main {
+    width: 100%
+  }
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 1200px){
+  .wrapper-main {
+    width: 100%
+  }
+  .container {
+    width: 85%;
+  }
+}
