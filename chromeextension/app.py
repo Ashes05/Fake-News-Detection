@@ -51,12 +51,17 @@ def scraper(url):
 
     page = requests.get(url)
     soup = BeautifulSoup(page.text, "html.parser")
-
+    
+    def paragraphmaker_id(elementtype, selector):
+        main_article = soup.find(elementtype, id=selector)
+        return main_article.find_all('p')
+    
+    def paragraphmaker_class(elementtype, selector):
+        main_article = soup.find(elementtype, class_=selector)
+        return main_article.find_all('p')
     
     if(re.search("https://www.thejournal.ie/", url)):
-        main_article = soup.find('div', id='main-content-wrapper')
-        main_article_paragraphs = main_article.find_all('p')
-
+        main_article_paragraphs = paragraphmaker_id('div','main-content-wrapper')
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
         push,prob = prediction(paragraph)
         return push,prob
@@ -85,7 +90,7 @@ def scraper(url):
         push,prob = prediction(paragraph)
         return push,prob
     elif(re.search("https://www.breakingnews.ie/", url)):
-        main_article = soup.find('div', class_='flex-1 lg:w-1/2')
+        main_article = soup.find('article')
         main_article_paragraphs = main_article.find_all('p')
         
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
@@ -93,7 +98,7 @@ def scraper(url):
         push,prob = prediction(paragraph)
         return push,prob
     elif(re.search("https://edition.cnn.com/", url)):
-        main_article = soup.find('div', class_='flex-1 lg:w-1/2')
+        main_article = soup.find('div', class_='article__content-container')
         main_article_paragraphs = main_article.find_all('p')
         
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
@@ -103,13 +108,39 @@ def scraper(url):
     elif(re.search("https://www.foxnews.com/", url)):
         main_article = soup.find('div', class_='article-body')
         main_article_paragraphs = main_article.find_all('p')
-
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
 
         push,prob = prediction(paragraph)
         return push,prob
+    elif(re.search("https://www.nbcnews.com/", url)):
+        main_article_paragraphs = paragraphmaker_class('div','article-body__content')      
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        push,prob = prediction(paragraph)
+        return push,prob
+    elif(re.search("https://abcnews.go.com/", url)):
+        main_article_paragraphs = paragraphmaker_class('div','theme-e FITT_Article_main__body oBTii mrzah')
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        push,prob = prediction(paragraph)
+        return push,prob
+    elif(re.search("https://www.newsmax.com/", url)):
+        main_article_paragraphs = paragraphmaker_id('div','mainArticleDiv')
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        push,prob = prediction(paragraph)
+        return push,prob
+    elif(re.search("https://www.theonion.com/", url)):
+        main_article_paragraphs = paragraphmaker_class('div','sc-r43lxo-1 cwnrYD')
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        #print(paragraph)
+        push,prob = prediction(paragraph)
+        return push,prob
     else:
-        print("I'll make a default scrapper later - khaleed")
+        #print("Hello")
+        main_article_paragraphs = soup.findAll("p")
+    
+        paragraph = '\n'.join([p.text for p in main_article_paragraphs])
+
+        push, prob = prediction(paragraph)
+        return push,prob
         
 @app.route('/',methods =['GET','POST'])
 def base():
