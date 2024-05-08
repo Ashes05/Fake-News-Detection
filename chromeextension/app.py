@@ -54,10 +54,16 @@ def scraper(url):
     
     def paragraphmaker_id(elementtype, selector):
         main_article = soup.find(elementtype, id=selector)
+        if main_article is None:
+            print(f"No article found with id '{selector}'")
+            return []
         return main_article.find_all('p')
     
     def paragraphmaker_class(elementtype, selector):
         main_article = soup.find(elementtype, class_=selector)
+        if main_article is None:
+            print(f"No article found with class '{selector}'")
+            return []
         return main_article.find_all('p')
     
     if(re.search("https://www.thejournal.ie/", url)):
@@ -133,6 +139,24 @@ def scraper(url):
         #print(paragraph)
         push,prob = prediction(paragraph)
         return push,prob
+    elif(re.search("https://www.msnbc.com/", url)):
+        try:
+            # Try to find paragraphs using 'article-body'
+            main_article_paragraphs = paragraphmaker_class('div', 'article-body')
+            if not main_article_paragraphs:
+                raise ValueError("No content found in 'article-body'")
+        except ValueError:
+            # If no content is found or another error occurs, try 'showblog-body__content'
+            main_article_paragraphs = paragraphmaker_class('div', 'showblog-body__content')
+
+        if main_article_paragraphs:
+            paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+            #print(paragraph)
+            push, prob = prediction(paragraph)
+            return push, prob
+        else:
+            print("Unable to find article content with either selector")
+            return None, None
     else:
         #print("Hello")
         main_article_paragraphs = soup.findAll("p")
@@ -160,7 +184,6 @@ def handle_data():
     url = data.get('url')
     push,prob = scraper(url) #Runs scraper method 
     prob = round(prob * 100, 2)  # Converting to percentage and rounding off
-    #
     return {"prob":prob,"result":push[0]} #Probability/Confidence (%) and result (REAL or FAKE)
     
 if __name__ == "__main__":
