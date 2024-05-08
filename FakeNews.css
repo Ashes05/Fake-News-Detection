@@ -84,7 +84,7 @@ progress[value]::-webkit-progress-value {
 }
 
 /* Style textarea elements within the container */
-.container textarea {
+.container textarea, .container input{
   text-align: left;
   width: 100%;
   resize: none;
@@ -92,7 +92,7 @@ progress[value]::-webkit-progress-value {
   outline: none;
   font-size: 16px;
   margin-top: 0px;
-  border-radius: 10px;
+  border-radius: 5px;
   max-height: 600px;
   caret-color: #ea4646;
   border: px solid #ea4646;
