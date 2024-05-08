@@ -18,7 +18,7 @@ CORS(app)
 #programDirectory = "C:/user/documents/Project/app.py"
 programDirectory = os.path.abspath(os.path.dirname(__file__))
 
-
+#Opening the file (Might have to change the routing)
 with open('Model/TrainedModels/FakeNewsModel_V3.pkl', 'rb') as file:
     rf_model,tfidf_vectorizer_text,tfidf_vectorizer_combined_sentiment = pickle.load(file)
 
@@ -54,10 +54,16 @@ def scraper(url):
     
     def paragraphmaker_id(elementtype, selector):
         main_article = soup.find(elementtype, id=selector)
+        if main_article is None:
+            print(f"No article found with id '{selector}'")
+            return []
         return main_article.find_all('p')
     
     def paragraphmaker_class(elementtype, selector):
         main_article = soup.find(elementtype, class_=selector)
+        if main_article is None:
+            print(f"No article found with class '{selector}'")
+            return []
         return main_article.find_all('p')
     
     if(re.search("https://www.thejournal.ie/", url)):
@@ -127,23 +133,45 @@ def scraper(url):
         paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
         push,prob = prediction(paragraph)
         return push,prob
+    elif(re.search("https://www.theonion.com/", url)):
+        main_article_paragraphs = paragraphmaker_class('div','sc-r43lxo-1 cwnrYD')
+        paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+        #print(paragraph)
+        push,prob = prediction(paragraph)
+        return push,prob
+    elif(re.search("https://www.msnbc.com/", url)):
+        try:
+            # Try to find paragraphs using 'article-body'
+            main_article_paragraphs = paragraphmaker_class('div', 'article-body')
+            if not main_article_paragraphs:
+                raise ValueError("No content found in 'article-body'")
+        except ValueError:
+            # If no content is found or another error occurs, try 'showblog-body__content'
+            main_article_paragraphs = paragraphmaker_class('div', 'showblog-body__content')
+
+        if main_article_paragraphs:
+            paragraph = '\n'.join([paragraph.text for paragraph in main_article_paragraphs])
+            #print(paragraph)
+            push, prob = prediction(paragraph)
+            return push, prob
+        else:
+            print("Unable to find article content with either selector")
+            return None, None
     else:
-        news = soup.findAll("p")
-        
-        for new in news:
-            print(new.text)
-        
-        
+        #print("Hello")
+        main_article_paragraphs = soup.findAll("p")
+    
+        paragraph = '\n'.join([p.text for p in main_article_paragraphs])
 
-
-
+        push, prob = prediction(paragraph)
+        return push,prob
+        
 @app.route('/',methods =['GET','POST'])
 def base():
     if request.method == 'POST':
         text = request.form['text']
         push,prob = prediction(text)
         prob = prob*100
-        push = ''.join(push) # Returns FALSE
         return render_template('FakeNew.html',push = push,prob = prob)
     return render_template('FakeNew.html')
 
@@ -152,19 +180,11 @@ def base():
 def handle_data():
     # Retrieve the JSON data from the request body
     data = request.json
-    
     # Process the data as needed
     url = data.get('url')
     push,prob = scraper(url) #Runs scraper method 
-    prob = prob*100
-    push = ''.join(push) # Returns FALSE
-
-    # Optionally, you can return a response to the client
-    return render_template('FakeNew.html',push = push,prob = prob)
-
+    prob = round(prob * 100, 2)  # Converting to percentage and rounding off
+    return {"prob":prob,"result":push[0]} #Probability/Confidence (%) and result (REAL or FAKE)
+    
 if __name__ == "__main__":
     app.run(host = '0.0.0.0')
-
-#Testing
-#text = "Hello, there folks today we are going to contribute contribution contributed like likes likely liked i dont care anymore!!!"
-#prediction(text)
