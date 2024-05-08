@@ -46,11 +46,13 @@ function updateResult(data) {
     }
     else {
         if (data.result === 'FAKE') {
-            resultDiv.textContent = 'This news is likely FAKE.';
-            resultDiv.className = 'result fake'; //red text
+            const result = `<strong>unreliable</strong>`;
+            resultDiv.innerHTML = `This news is ${result}.`;
+            resultDiv.className = 'result fake';
         } else {
-            resultDiv.textContent = 'This news is likely REAL.';
-            resultDiv.className = 'result real'; //green text
+            const result = `<strong>reliable</strong>`;
+            resultDiv.innerHTML = `This news is ${result}.`;
+            resultDiv.className = 'result real';
         }
         if (data.prob < 50) {
             scoreDiv.textContent = `Confidence: ${(data.prob).toFixed(2)}%`; //make sure it's fixed to 2 decimal places
