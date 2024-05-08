@@ -16,9 +16,12 @@
   <body>
     <div class="wrapper-main">
       <div class="boop" id="wrapper" style="text-align: center">
+        
         <div class="container">
           <!-- Another container for the button to work off aswell as being a child of the first container -->
           <div class="container2">
+           
+
             <!-- Dark Mode and Light Mode slider -->
             <h1 style="font-size: 20px; color: white" id="lightmodetext">
               Dark Mode
@@ -27,7 +30,14 @@
               <input type="checkbox" id="check" onclick="isChecked()" />
               <span class="slider"></span>
             </label>
+            
           </div>
+          
+          <form action="/scraper" method="post">
+            <input type="text" id="url" name="url" style="width: 500px; height:25px;" placeholder="Enter URL">
+            <button>Check URL</button>
+          </form>
+          
 
           <!-- Title of the page -->
           <h1
