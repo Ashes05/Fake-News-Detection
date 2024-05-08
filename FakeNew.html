@@ -4,10 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap"
-      rel="stylesheet"
-    /> -->
+     <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&family=News+Cycle:wght@400;700&display=swap" rel="stylesheet" /> 
     <link rel="stylesheet" href="FakeNews.css" />
 
     <link rel="icon" type="image/x-icon" href="Icon.png" />
@@ -33,12 +30,6 @@
             
           </div>
           
-          <form action="/scraper" method="post">
-            <input type="text" id="url" name="url" style="width: 500px; height:25px;" placeholder="Enter URL">
-            <button>Check URL</button>
-          </form>
-          
-
           <!-- Title of the page -->
           <h1
             style="color: white; font-size: 40px; text-align: center"
@@ -47,7 +38,7 @@
             Fake News Detector
           </h1>
 
-          <!-- Text Input -->
+          <!-- News Artical Text Input -->
           <form action="/" method="post">
             <textarea
               id="text"
@@ -59,6 +50,12 @@
             <!-- Sends the inputted text to the back-end -->
             <button onclick="" id="button">Check</button>
           </form>
+
+          <!-- Link Input -->
+          <form style= "margin-top: 10px;"action="/scraper" method="post">
+            <input type="text" id="url" name="url" style="width:70%; height:30px; border-color: transparent;" placeholder="Enter URL">
+            <button style= "margin-top: 5px;">Check URL</button>
+          </form>
           <!-- Code for the progress bar -->
           <progress id="fakeness" value="{{prob}}" max="100">0%</progress>
           <br />
@@ -66,9 +63,11 @@
           <label id="finalresult" style="font-size: larger; color: white">
             {{prob}}% {{push}}</label
           >
+          
           <div style="margin-top: 10px">
             <button onclick="resetPage()" id="button2">Reset</button>
           </div>
+          
         </div>
       </div>
     </div>
