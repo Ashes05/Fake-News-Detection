@@ -182,6 +182,10 @@ def base():
         text = request.form['text']
         push,prob = prediction(text)
         prob = prob*100
+        if(push == "['FAKE']"):
+            push = "Unreliable"
+        else:
+            push = "Reliable"
         return render_template('FakeNew.html',push = push,prob = prob)
     return render_template('FakeNew.html')
 
