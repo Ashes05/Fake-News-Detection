@@ -165,6 +165,16 @@ def scraper(url):
 
         push, prob = prediction(paragraph)
         return push,prob
+
+
+@app.route('/scraper', methods=['POST', 'GET'])
+def handle():
+ if request.method == 'POST':
+    url = request.form.get('url')
+    push,prob = scraper(url) #Runs scraper method 
+    prob = round(prob * 100, 2)  # Converting to percentage and rounding off
+    return render_template('FakeNew.html', push=push, prob=prob)
+ return render_template('FakeNew.html')
         
 @app.route('/',methods =['GET','POST'])
 def base():
