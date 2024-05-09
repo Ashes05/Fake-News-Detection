@@ -173,6 +173,13 @@ def handle():
     url = request.form.get('url')
     push,prob = scraper(url) #Runs scraper method 
     prob = round(prob * 100, 2)  # Converting to percentage and rounding off
+
+    print(push)
+    print(type(push))
+    if 'FAKE' in push:
+        push = "Unreliable"
+    else:
+        push = "Reliable"
     return render_template('FakeNew.html', push=push, prob=prob)
  return render_template('FakeNew.html')
         
@@ -181,8 +188,10 @@ def base():
     if request.method == 'POST':
         text = request.form['text']
         push,prob = prediction(text)
-        prob = prob*100
-        if(push == "['FAKE']"):
+        prob = round(prob * 100, 2)  # Converting to percentage and rounding off
+        print(push)
+        print(type(push))
+        if 'FAKE' in push:
             push = "Unreliable"
         else:
             push = "Reliable"
